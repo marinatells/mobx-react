@@ -11,6 +11,11 @@ export default class FilmsStore {
 
     currentPage = 4;
 
+    constructor() {
+		makeAutoObservable(this);
+	}
+
+
     get nextPage () {
         return  this.pages[this.currentPage + 1];
     }
@@ -19,9 +24,6 @@ export default class FilmsStore {
         return  this.pages[this.currentPage - 1];
     }
 
-	constructor() {
-		makeAutoObservable(this);
-	}
 
     add = (film) => {
         this.films.push(film);
@@ -32,15 +34,25 @@ export default class FilmsStore {
     }
 
     loadData = async () => {
-        if (this.isLoaded && this.isLoading) {
+        if (this.isLoaded || this.isLoading) {
             return;
         }
 
-        this.isLoading = true;
-        const data = await fetch();
-        this.isLoading = false;
+        runInAction(() => {
+            this.isLoading = true;
+        });
 
-        this.films = data;
-        this.isLoaded = true;
+        // загрузка с сервера (тут должен быть fetch)
+        const data = await Promise.resolve([
+            {name: 'фильм 1 с сервера'},
+            {name: 'фильм 2 c сервера'},
+        ]);
+        
+        runInAction(() => {
+            this.isLoading = false;
+    
+            this.films = data;
+            this.isLoaded = true;
+        });
     }
 }

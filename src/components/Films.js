@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import {inject, observer} from 'mobx-react';
 
-function Films({ films, add }) {
-    if (isLoaded) {
-        return;
+function Films({ films, add, isLoaded }) {
+    if (!isLoaded) {
+        return '... идет загрузка ...';
     }
     
     const onAdd = () => {
@@ -31,6 +31,6 @@ export default inject(({ filmsStore }) => {
     });
 
 	return {
-        films, add
+        films, add, isLoaded
     };
 })(observer(Films));

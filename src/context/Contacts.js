@@ -7,7 +7,7 @@ export const ContactsWrapper = ({ children }) => {
 
     const changeContact = (contact) => {
        const index = contacts.findIndex(item => item.id === contact.id);
-       contacts[index] = contact;
+       contacts[index] = {...contact};
        setContacts([...contacts]);
     }
 
